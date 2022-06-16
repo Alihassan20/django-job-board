@@ -1,4 +1,7 @@
+from distutils.command.upload import upload
+from email.mime import image
 from pickle import TRUE
+from pyexpat import model
 from unicodedata import category
 from django.db import models
 
@@ -7,6 +10,12 @@ JOB_TYPE = (
     ('Full Time','Full Time'),
     ('Part Time','Part Time'),
 )
+
+
+def image_upload(instance ,filename):
+    imagename,extension = filename.split(".")
+    return "jobs/%s.%s"%(instance.id,instance.id,extension)
+
 class Job(models.Model): #table
     tilte = models.CharField(max_length=100) #colum
     #location
@@ -17,6 +26,7 @@ class Job(models.Model): #table
     salary =models.IntegerField(default=0)
     experiance=models.IntegerField(default=1)
     category=models.ForeignKey('Category',on_delete=models.CASCADE)
+    image=models.ImageField(upload_to='jobs/')
 
 
     def __str__(self):
